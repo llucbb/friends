@@ -32,7 +32,7 @@ We hope we can refactor the API in a future iteration, **but not in this challen
 So we provide you with an initial implementation of controllers that fulfill the legacy API and you can work from there.
 
 The legacy team has provided us with a script that you can execute to check if your implementation is on the right path.
-Just execute `bash -c scripts/legacy-test` while your service is running and expect all checks to pass.
+Just execute `./legacy-test` while your service is running and expect all checks to pass.
 This script uses `bash` and should work just fine in macOs and linux.
 
 No database needed, you can persist everything in memory.
