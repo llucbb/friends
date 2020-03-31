@@ -128,6 +128,4 @@ public class UserService {
             throw new ConstraintViolationException(String.format(MSG_USER_PASSWORD, userName), null);
         }
     }
-
-
 }

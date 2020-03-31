@@ -1,4 +1,4 @@
-# Schibsted Spain Backend Coding Challenge
+# Backend Coding Challenge
 
 Welcome to our coding challenge, hope you enjoy it!
 
@@ -33,12 +33,8 @@ So we provide you with an initial implementation of controllers under package `c
 
 The legacy team has provided us with a script that you can execute to check if your implementation is on the right path.
 Just execute `bash -c scripts/legacy-test` while your service is running and expect all checks to pass.
-This script uses `bash` and should work just fine in macOs and linux. In windows you can use [git-bash](https://gitforwindows.org/).
+This script uses `bash` and should work just fine in macOs and linux.
 
 No database needed, you can persist everything in memory.
 
 We expect from you to apply good practices and be proud of what you do. Good luck!
-
-## Build & Run
-
-`./gradlew bootRun`
