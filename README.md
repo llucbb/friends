@@ -29,7 +29,7 @@ The use cases that need to be implemented are:
 There is one drawback, we have to maintain the API of the legacy service, which is awful but nothing we can do 😞.
 We hope we can refactor the API in a future iteration, **but not in this challenge**.
 
-So we provide you with an initial implementation of controllers under package `com.schibsted.spain.friends.legacy` that fulfill the legacy API and you can work from there.
+So we provide you with an initial implementation of controllers that fulfill the legacy API and you can work from there.
 
 The legacy team has provided us with a script that you can execute to check if your implementation is on the right path.
 Just execute `bash -c scripts/legacy-test` while your service is running and expect all checks to pass.
