@@ -123,7 +123,7 @@ response_status_code_should_be 4..
 
 given_request "GET -H X-Password:j12345678 $service/friendship/list?username=johndoe"
 response_status_code_should_be 2..
-response_body_should_be "[\"roseanne\",\"robert\"]"
+response_body_should_be "[\"robert\",\"roseanne\"]"
 response_content_type_should_be "application/json"
 
 given_request "GET -H X-Password:r3456789 $service/friendship/list?username=roseanne"

@@ -83,7 +83,9 @@ public class FriendshipLegacyController implements ServletContextAware {
 
                        @RequestHeader("X-Password") @Size(min = 8, max = 12)
                        @Pattern(regexp = REGEXP_ALPHANUMERIC, message = MSG_ALPHANUMERIC_CHARS) String password) {
-        throw new RuntimeException("not implemented yet!");
+
+        Map<String, User> registeredUsers = (Map<String, User>) servletContext.getAttribute(REGISTERED_USERS);
+        return userService.listFriends(username, password, registeredUsers);
     }
 
     @Override

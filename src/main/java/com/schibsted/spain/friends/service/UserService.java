@@ -14,6 +14,7 @@ public class UserService {
 
     public static final String REGISTERED_USERS = "registeredUsers";
     private static final String MSG_USER_REGISTERED = "User %s has already been registered";
+    private static final String MSG_USERS_NOT_REGISTERED = "There are no registered users yet";
     private static final String MSG_USER_NOT_REGISTERED = "User %s has not been registered yet";
     private static final String MSG_USER_FRIENDSHIP_NOT_HIMSELF = "User cannot request friendship to himself";
     private static final String MSG_USER_FRIENDSHIP_PENDING = "User cannot request friendship to a user that " +
@@ -22,6 +23,13 @@ public class UserService {
     private static final String MSG_USERS_ALREADY_FRIENDS = "User %s and user %s are already friends";
     private static final String MSG_USER_PASSWORD = "Incorrect user %s password";
 
+    /**
+     * Requests to register a new user
+     *
+     * @param user            New {@link User} to be registered
+     * @param registeredUsers Registered users of the system
+     * @return Registered users of the system updated
+     */
     public Map<String, User> signUp(User user, Map<String, User> registeredUsers) {
         if (registeredUsers == null) {
             registeredUsers = new ConcurrentHashMap<>();
@@ -38,7 +46,7 @@ public class UserService {
      * Requests a friendship from userNameFrom to userNameTo
      *
      * @param userNameFrom    Username of the user requesting friendship
-     * @param userNameTo      Usernmae of the user receiving the friendship request
+     * @param userNameTo      Username of the user receiving the friendship request
      * @param password        Password of the the user requesting friendship
      * @param registeredUsers Registered users of the system
      * @return Registered users of the system updated
@@ -46,7 +54,7 @@ public class UserService {
     public Map<String, User> requestFriendship(String userNameFrom, String userNameTo, String password,
                                                Map<String, User> registeredUsers) {
 
-        validateUsersAreRegistered(userNameFrom, userNameTo, registeredUsers);
+        validateUsersAreRegistered(registeredUsers, userNameFrom, userNameTo);
         validatePassword(userNameFrom, password, registeredUsers);
 
         if (userNameFrom.equals(userNameTo)) {
@@ -75,16 +83,18 @@ public class UserService {
     }
 
     /**
-     * @param userNameFrom
-     * @param userNameTo
-     * @param password
-     * @param registeredUsers
-     * @return
+     * Accepts or declines a friendship
+     *
+     * @param userNameFrom    Username of the user with the pending friendship request to accept/decline
+     * @param userNameTo      Username of the user receiving the friendship request
+     * @param password        Password of the userNameFrom
+     * @param registeredUsers Registered users of the system
+     * @return Registered users of the system updated
      */
     public Map<String, User> acceptDeclineFriendship(boolean accept, String userNameFrom, String userNameTo,
                                                      String password, Map<String, User> registeredUsers) {
 
-        validateUsersAreRegistered(userNameFrom, userNameTo, registeredUsers);
+        validateUsersAreRegistered(registeredUsers, userNameFrom, userNameTo);
         validatePassword(userNameFrom, password, registeredUsers);
 
         // Check if userFrom have a pending request from userTo
@@ -114,12 +124,31 @@ public class UserService {
         return registeredUsers;
     }
 
-    private void validateUsersAreRegistered(String userNameFrom, String userNameTo, Map<String, User> registeredUsers) {
-        if (CollectionUtils.isEmpty(registeredUsers) || !registeredUsers.containsKey(userNameFrom)) {
-            throw new ConstraintViolationException(String.format(MSG_USER_NOT_REGISTERED, userNameFrom), null);
+    /**
+     * Lists the friends of a registered user
+     *
+     * @param userName        Username of the registered user
+     * @param password        Password of the userName
+     * @param registeredUsers Registered users of the system
+     * @return Set of friends of the userName
+     */
+    public Object listFriends(String userName, String password, Map<String, User> registeredUsers) {
+
+        validateUsersAreRegistered(registeredUsers, userName);
+        validatePassword(userName, password, registeredUsers);
+
+        User user = registeredUsers.get(userName);
+        return user.getFriends();
+    }
+
+    private void validateUsersAreRegistered(Map<String, User> registeredUsers, String... userNames) {
+        if (CollectionUtils.isEmpty(registeredUsers)) {
+            throw new ConstraintViolationException(MSG_USERS_NOT_REGISTERED, null);
         }
-        if (!registeredUsers.containsKey(userNameTo)) {
-            throw new ConstraintViolationException(String.format(MSG_USER_NOT_REGISTERED, userNameTo), null);
+        for (String userName : userNames) {
+            if (!registeredUsers.containsKey(userName)) {
+                throw new ConstraintViolationException(String.format(MSG_USER_NOT_REGISTERED, userName), null);
+            }
         }
     }
 
