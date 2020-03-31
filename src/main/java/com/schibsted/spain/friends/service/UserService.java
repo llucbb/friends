@@ -74,7 +74,6 @@ public class UserService {
         return registeredUsers;
     }
 
-
     /**
      * @param userNameFrom
      * @param userNameTo
@@ -82,8 +81,8 @@ public class UserService {
      * @param registeredUsers
      * @return
      */
-    public Map<String, User> acceptFriendship(String userNameFrom, String userNameTo, String password,
-                                              Map<String, User> registeredUsers) {
+    public Map<String, User> acceptDeclineFriendship(boolean accept, String userNameFrom, String userNameTo,
+                                                     String password, Map<String, User> registeredUsers) {
 
         validateUsersAreRegistered(userNameFrom, userNameTo, registeredUsers);
         validatePassword(userNameFrom, password, registeredUsers);
@@ -99,25 +98,20 @@ public class UserService {
         // Remove pending request
         pendingFriendships.remove(userNameTo);
 
-        // Make both users friends
-        userFrom.getFriends().add(userNameTo);
         User userTo = registeredUsers.get(userNameTo);
-        userTo.getFriends().add(userNameFrom);
+        if (accept) {
+            // Make both users friends
+            userFrom.getFriends().add(userNameTo);
+            userTo.getFriends().add(userNameFrom);
+        } else {
+            // Make both users not friends
+            userFrom.getFriends().remove(userNameTo);
+            userTo.getFriends().remove(userNameFrom);
+        }
 
         registeredUsers.put(userNameFrom, userFrom);
         registeredUsers.put(userNameTo, userTo);
         return registeredUsers;
-    }
-
-    public Map<String, User> declineFriendship(String userNameFrom, String userNameTo, String password,
-                                               Map<String, User> registeredUsers) {
-
-        validateUsersAreRegistered(userNameFrom, userNameTo, registeredUsers);
-        validatePassword(userNameFrom, password, registeredUsers);
-
-
-        return registeredUsers;
-
     }
 
     private void validateUsersAreRegistered(String userNameFrom, String userNameTo, Map<String, User> registeredUsers) {

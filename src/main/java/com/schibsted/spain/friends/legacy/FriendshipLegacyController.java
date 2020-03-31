@@ -59,7 +59,7 @@ public class FriendshipLegacyController implements ServletContextAware {
 
         Map<String, User> registeredUsers = (Map<String, User>) servletContext.getAttribute(REGISTERED_USERS);
         servletContext.setAttribute(REGISTERED_USERS,
-                userService.acceptFriendship(usernameFrom, usernameTo, password, registeredUsers));
+                userService.acceptDeclineFriendship(true, usernameFrom, usernameTo, password, registeredUsers));
     }
 
     @PostMapping("/decline")
@@ -74,7 +74,7 @@ public class FriendshipLegacyController implements ServletContextAware {
 
         Map<String, User> registeredUsers = (Map<String, User>) servletContext.getAttribute(REGISTERED_USERS);
         servletContext.setAttribute(REGISTERED_USERS,
-                userService.declineFriendship(usernameFrom, usernameTo, password, registeredUsers));
+                userService.acceptDeclineFriendship(false, usernameFrom, usernameTo, password, registeredUsers));
     }
 
     @GetMapping("/list")
