@@ -132,7 +132,7 @@ public class UserService {
      * @param registeredUsers Registered users of the system
      * @return Set of friends of the userName
      */
-    public Object listFriends(String userName, String password, Map<String, User> registeredUsers) {
+    public Set<String> listFriends(String userName, String password, Map<String, User> registeredUsers) {
 
         validateUsersAreRegistered(registeredUsers, userName);
         validatePassword(userName, password, registeredUsers);
